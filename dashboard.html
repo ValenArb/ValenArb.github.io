@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Control de Horas</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1 id="welcomeMessage">Bienvenido</h1>
+            <div class="user-info">
+                <img id="userPhoto" src="" alt="Foto de perfil">
+                <p id="userEmail"></p>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Aquí irá el contenido de tu aplicación -->
+            <h2>Registro de Horas</h2>
+            <p>Contenido protegido solo para usuarios autenticados.</p>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    
+    <!-- Tus scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/protected-routes.js"></script>
+    
+    <script>
+        // Mostrar datos del usuario
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById("welcomeMessage").textContent = `¡Hola, ${user.displayName || "Usuario"}!`;
+                document.getElementById("userEmail").textContent = user.email;
+                document.getElementById("userPhoto").src = user.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+        });
+        
+        // Cerrar sesión
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            auth.signOut()
+                .then(() => window.location.href = "index.html")
+                .catch(error => console.error("Error al cerrar sesión:", error));
+        });
+    </script>
+</body>
+</html>

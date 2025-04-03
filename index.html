@@ -1,1 +1,71 @@
-Hello World
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Horas - Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h1>Control de Horas</h1>
+        
+        <!-- Pestañas Login/Registro -->
+        <div class="tabs">
+            <button class="tab active" id="loginTab">Iniciar Sesión</button>
+            <button class="tab" id="registerTab">Registrarse</button>
+        </div>
+        
+        <!-- Formulario Login -->
+        <form id="loginForm" class="auth-form active">
+            <div class="form-group">
+                <input type="email" id="loginEmail" placeholder="Correo" required>
+                <div class="error-message" id="loginEmailError"></div>
+            </div>
+            <div class="form-group">
+                <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                <div class="error-message" id="loginPasswordError"></div>
+            </div>
+            <button type="submit" class="btn">Ingresar</button>
+        </form>
+        
+        <!-- Formulario Registro -->
+        <form id="registerForm" class="auth-form">
+            <div class="form-group">
+                <input type="email" id="registerEmail" placeholder="Correo" required>
+                <div class="error-message" id="registerEmailError"></div>
+            </div>
+            <div class="form-group">
+                <input type="password" id="registerPassword" placeholder="Contraseña (mínimo 6 caracteres)" required>
+                <div class="error-message" id="registerPasswordError"></div>
+            </div>
+            <div class="form-group">
+                <input type="password" id="registerConfirm" placeholder="Confirmar Contraseña" required>
+                <div class="error-message" id="registerConfirmError"></div>
+            </div>
+            <button type="submit" class="btn">Crear Cuenta</button>
+        </form>
+        
+        <!-- Separador -->
+        <div class="separator">o</div>
+        
+        <!-- Botón Google -->
+        <button id="googleLogin" class="btn-google">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google">
+            Continuar con Google
+        </button>
+        
+        <!-- Enlace recuperación -->
+        <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    
+    <!-- Tus scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/protected-routes.js"></script>
+</body>
+</html>
