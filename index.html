@@ -10,14 +10,14 @@
     <div class="auth-container">
         <h1>Control de Horas</h1>
         
-        <!-- Pestañas Login/Registro -->
+        <!-- Pestañas Login/Registro - Versión corregida -->
         <div class="tabs">
-            <button class="tab active" id="loginTab">Iniciar Sesión</button>
-            <button class="tab" id="registerTab">Registrarse</button>
+            <button type="button" class="tab active" id="loginTab" onclick="switchTab('login')">Iniciar Sesión</button>
+            <button type="button" class="tab" id="registerTab" onclick="switchTab('register')">Registrarse</button>
         </div>
         
         <!-- Formulario Login -->
-        <form id="loginForm" class="auth-form active">
+        <form id="loginForm" class="auth-form active-form">
             <div class="form-group">
                 <input type="email" id="loginEmail" placeholder="Correo" required>
                 <div class="error-message" id="loginEmailError"></div>
@@ -59,13 +59,33 @@
         <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <!-- Firebase SDK v10 (2024) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     
     <!-- Tus scripts -->
     <script src="js/firebase-config.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/db.js"></script>
     <script src="js/protected-routes.js"></script>
+
+    <!-- Script para el cambio de pestañas -->
+    <script>
+        function switchTab(tabName) {
+            // Actualizar clases de las pestañas
+            document.getElementById('loginTab').classList.toggle('active', tabName === 'login');
+            document.getElementById('registerTab').classList.toggle('active', tabName === 'register');
+            
+            // Actualizar visibilidad de formularios
+            document.getElementById('loginForm').classList.toggle('active-form', tabName === 'login');
+            document.getElementById('registerForm').classList.toggle('active-form', tabName === 'register');
+            
+            // Limpiar mensajes de error al cambiar de pestaña
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+            });
+        }
+    </script>
 </body>
 </html>
