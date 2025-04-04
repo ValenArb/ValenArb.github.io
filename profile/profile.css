@@ -1,0 +1,298 @@
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --text-color: #1f2937;
+    --light-gray: #f3f4f6;
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-color);
+    background-color: #f9fafb;
+    line-height: 1.5;
+    margin: 0;
+    padding: 20px;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.full-width {
+    width: 100%;
+    max-width: 100%; /* Prevent overflow */
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
+.profile-container h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #111827;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    width: 100%;
+}
+
+/* Sección Avatar */
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-upload {
+    text-align: center;
+    position: relative;
+}
+
+.avatar-preview {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin-bottom: 1.25rem;
+    border-radius: 50%; /* Keep the border-radius for the visual circle */
+    border: 3px solid var(--primary-color);
+    background-color: var(--light-gray);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 0;
+    /* Remove overflow: hidden to prevent clipping */
+}
+
+
+.avatar-preview:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    clip-path: circle(50%); /* Apply clip-path only to the image */
+}
+
+.edit-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+
+.edit-icon-container {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--primary-color);
+    z-index: 10; /* Ensure it appears above the avatar */
+}
+
+.edit-icon svg {
+    color: var(--primary-color);
+    width: 16px;
+    height: 16px;
+}
+
+.avatar-preview:hover .edit-icon-container {
+    background: var(--primary-color);
+}
+.avatar-preview:hover .edit-icon {
+    color: white;
+    transform: rotate(15deg);
+}
+.avatar-preview:hover .edit-icon svg {
+    color: white;
+}
+
+.avatar-upload input[type="file"] {
+    display: none;
+}
+
+/* Campos del formulario */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.required-asterisk {
+    color: red;
+    font-size: 1rem;
+    margin-left: 0.25rem;
+}
+
+.name-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 0.9fr));
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    font-family: inherit;
+    transition: border 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Input de moneda integrado */
+.currency-input {
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.currency-input:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.currency-select {
+    width: 80px !important;
+    border: none !important;
+    border-right: 1px solid var(--border-color) !important;
+    border-radius: 0 !important;
+    background: var(--light-gray);
+    padding: 0.75rem;
+    font-weight: 500;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.currency-input input {
+    border: none !important;
+    border-radius: 0 !important;
+    flex: 1;
+    padding-left: 1rem !important;
+}
+
+/* Select2 personalizado */
+.select2-container .select2-selection--single {
+    height: 42px !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 42px !important;
+    padding-left: 12px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px !important;
+}
+
+/* Botones */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-primary {
+    padding: 0.625rem 1.25rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    padding: 0.625rem 1.25rem;
+    background-color: white;
+    color: #374151;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: var(--light-gray);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .avatar-section {
+        margin-bottom: 2rem;
+    }
+    
+    .name-fields {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+}
