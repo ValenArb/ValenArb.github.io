@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Horas - Login</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
     <div class="auth-container">
         <h1>Control de Horas</h1>
         
-        <!-- Pestañas Login/Registro - Versión corregida -->
+        <!-- Login/Register Tabs -->
         <div class="tabs">
-            <button type="button" class="tab active" id="loginTab" onclick="switchTab('login')">Iniciar Sesión</button>
-            <button type="button" class="tab" id="registerTab" onclick="switchTab('register')">Registrarse</button>
+            <button class="tab active" id="loginTab">Iniciar Sesión</button>
+            <button class="tab" id="registerTab">Registrarse</button>
         </div>
         
-        <!-- Formulario Login -->
+        <!-- Login Form -->
         <form id="loginForm" class="auth-form active-form">
             <div class="form-group">
                 <input type="email" id="loginEmail" placeholder="Correo" required>
@@ -27,9 +27,18 @@
                 <div class="error-message" id="loginPasswordError"></div>
             </div>
             <button type="submit" class="btn">Ingresar</button>
+            
+            <!-- Verification Reminder (hidden by default) -->
+            <div id="verifyEmailReminder" class="verification-reminder">
+                <p>¡Verificación requerida! Por favor revisa tu correo electrónico.</p>
+                <button id="verifyEmailBtn" class="btn-outline">Reenviar Código</button>
+                <div id="resendTimer" class="timer">Puedes reenviar en 2:00</div>
+            </div>
+            
+            <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
         </form>
         
-        <!-- Formulario Registro -->
+        <!-- Register Form -->
         <form id="registerForm" class="auth-form">
             <div class="form-group">
                 <input type="email" id="registerEmail" placeholder="Correo" required>
@@ -44,48 +53,25 @@
                 <div class="error-message" id="registerConfirmError"></div>
             </div>
             <button type="submit" class="btn">Crear Cuenta</button>
+            <p class="notice">Al registrarte, recibirás un correo de verificación</p>
         </form>
         
-        <!-- Separador -->
+        <!-- Social Login -->
         <div class="separator">o</div>
-        
-        <!-- Botón Google -->
         <button id="googleLogin" class="btn-google">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
             Continuar con Google
         </button>
-        
-        <!-- Enlace recuperación -->
-        <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
     </div>
 
-    <!-- Firebase SDK v10 (2024) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     
-    <!-- Tus scripts -->
+    <!-- App Scripts -->
     <script src="js/firebase-config.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/db.js"></script>
-    <script src="js/protected-routes.js"></script>
-
-    <!-- Script para el cambio de pestañas -->
-    <script>
-        function switchTab(tabName) {
-            // Actualizar clases de las pestañas
-            document.getElementById('loginTab').classList.toggle('active', tabName === 'login');
-            document.getElementById('registerTab').classList.toggle('active', tabName === 'register');
-            
-            // Actualizar visibilidad de formularios
-            document.getElementById('loginForm').classList.toggle('active-form', tabName === 'login');
-            document.getElementById('registerForm').classList.toggle('active-form', tabName === 'register');
-            
-            // Limpiar mensajes de error al cambiar de pestaña
-            document.querySelectorAll('.error-message').forEach(el => {
-                el.textContent = '';
-            });
-        }
-    </script>
 </body>
 </html>

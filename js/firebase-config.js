@@ -8,12 +8,10 @@ const firebaseConfig = {
   appId: "1:365035529456:web:ccb25f8ea909e9876fce35"
 };
 
-// Inicializar Firebase
+// Inicialización (únicas declaraciones globales)
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-
-// Configurar proveedor de Google
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 console.log("Firebase inicializado correctamente");

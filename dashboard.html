@@ -4,52 +4,301 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Control de Horas</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
 </head>
 <body>
-    <div class="dashboard-container">
+    <div class="container">
         <header>
-            <h1 id="welcomeMessage">Bienvenido</h1>
-            <div class="user-info">
-                <img id="userPhoto" src="" alt="Foto de perfil">
-                <p id="userEmail"></p>
-                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            <div class="header-left">
+                <h1>Control de Horas</h1>
+                <p id="current-date"></p>
+            </div>
+            <div class="header-right">
+                <!-- Botón para agregar jornada -->
+                <button id="add-time-btn" class="btn btn-primary" style="margin-right: 10px;">
+                    + Nueva Jornada
+                </button>
+                
+                <div class="user-info">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=U" alt="User" class="user-avatar">
+                    <span id="user-name">Usuario</span>
+                </div>
+                <button class="logout-btn">Cerrar Sesión</button>
             </div>
         </header>
         
-        <main>
-            <!-- Aquí irá el contenido de tu aplicación -->
-            <h2>Registro de Horas</h2>
-            <p>Contenido protegido solo para usuarios autenticados.</p>
-        </main>
+        <div class="tabs">
+            <div class="tab active">Resumen</div>
+            <div class="tab">Horas</div>
+            <div class="tab">KM</div>
+            <div class="tab">Gastos</div>
+            <div class="tab">Configuración</div>
+        </div>
+        
+        <!-- Resumen Tab -->
+        <div class="tab-content active">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Resumen Mensual</h2>
+                        <div class="card-actions">
+                            <select id="month-selector" class="btn btn-outline">
+                                <option value="0">Seleccionar mes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <h3>Horas Normales</h3>
+                            <p class="value" id="normal-hours">X</p>
+                            <p class="subtext">Sin datos comparativos</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Horas Extra</h3>
+                            <p class="value" id="extra-hours">X</p>
+                            <p class="subtext">150%: X | 200%: X</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Sueldo Bruto</h3>
+                            <p class="value" id="gross-salary">$X</p>
+                            <p class="subtext">Sin datos comparativos</p>
+                        </div>
+                        <div class="metric">
+                            <h3>KM Recorridos</h3>
+                            <p class="value" id="monthly-km">X</p>
+                            <p class="subtext">Promedio: X km/día</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Resumen Anual</h2>
+                        <div class="card-actions">
+                            <select id="year-selector" class="btn btn-outline">
+                                <option value="0">Seleccionar año</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <h3>Sueldo Promedio</h3>
+                            <p class="value" id="avg-salary">$X</p>
+                            <p class="subtext">Mejor mes: $X</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Horas Totales</h3>
+                            <p class="value" id="total-hours">X</p>
+                            <p class="subtext">Normales: X | Extra: X</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Proyección Anual</h3>
+                            <p class="value" id="annual-projection">$X</p>
+                            <p class="subtext">Sin datos comparativos</p>
+                        </div>
+                        <div class="metric">
+                            <h3>KM Totales</h3>
+                            <p class="value" id="total-km">X</p>
+                            <p class="subtext">Promedio: X/mes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Detalle por Mes</h2>
+                </div>
+                <div class="table-container">
+                    <table id="monthly-detail-table">
+                        <thead>
+                            <tr>
+                                <th>Mes</th>
+                                <th>Horas Normales</th>
+                                <th>Horas Extra 150%</th>
+                                <th>Horas Extra 200%</th>
+                                <th>Sueldo Bruto</th>
+                                <th>KM</th>
+                                <th>Gastos</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="8" class="no-data">No hay datos disponibles</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Horas Tab -->
+        <div class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Registro de Horas</h2>
+                    <div class="card-actions">
+                        <button id="add-hours-btn" class="btn btn-primary">+ Nueva Entrada</button>
+                        <select id="hours-month-selector" class="btn btn-outline">
+                            <option value="0">Seleccionar mes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="hours-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Día</th>
+                                <th>Ingreso</th>
+                                <th>Egreso</th>
+                                <th>Horas Normales</th>
+                                <th>Horas Extra</th>
+                                <th>Total</th>
+                                <th>Tipo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="9" class="no-data">No hay registros de horas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- KM Tab -->
+        <div class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Registro de Kilómetros</h2>
+                    <div class="card-actions">
+                        <button id="add-km-btn" class="btn btn-primary">+ Nuevo Registro</button>
+                        <select id="km-month-selector" class="btn btn-outline">
+                            <option value="0">Seleccionar mes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="km-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Origen</th>
+                                <th>Destino</th>
+                                <th>KM</th>
+                                <th>Propósito</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7" class="no-data">No hay registros de kilómetros</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gastos Tab -->
+        <div class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Registro de Gastos</h2>
+                    <div class="card-actions">
+                        <button id="add-expense-btn" class="btn btn-primary">+ Nuevo Gasto</button>
+                        <select id="expense-month-selector" class="btn btn-outline">
+                            <option value="0">Seleccionar mes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="expenses-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Categoría</th>
+                                <th>Descripción</th>
+                                <th>Monto</th>
+                                <th>Comprobante</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7" class="no-data">No hay registros de gastos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Configuración Tab -->
+        <div class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Configuración de Cuenta</h2>
+                </div>
+                <div style="padding: 20px;">
+                    <form id="settings-form" style="max-width: 500px;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Nombre Completo</label>
+                            <input type="text" id="user-fullname" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Correo Electrónico</label>
+                            <input type="email" id="user-email" disabled style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background-color: #f5f5f5;">
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Tarifa por Hora Normal</label>
+                            <div style="display: flex; align-items: center;">
+                                <span style="margin-right: 5px;">$</span>
+                                <input type="number" id="hourly-rate" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    <!-- Añadir esta línea después de firebase-auth-compat.js -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <!-- Tus scripts -->
+    <!-- Modal para agregar/editar registros -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Nuevo Registro</h2>
+            <form id="modal-form">
+                <!-- Los campos se llenarán dinámicamente -->
+                <div id="modal-fields"></div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
+    </div>
+    <div id="time-add-modal-container" style="display: none;">
+        <div id="time-add-backdrop" class="modal-backdrop"></div>
+        <div id="time-add-modal" class="time-add-container"></div>
+    </div>
+    <!-- App Scripts -->
     <script src="js/firebase-config.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/protected-routes.js"></script>
-    
-    <script>
-        // Mostrar datos del usuario
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                document.getElementById("welcomeMessage").textContent = `¡Hola, ${user.displayName || "Usuario"}!`;
-                document.getElementById("userEmail").textContent = user.email;
-                document.getElementById("userPhoto").src = user.photoURL || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-            }
-        });
-        
-        // Cerrar sesión
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            auth.signOut()
-                .then(() => window.location.href = "index.html")
-                .catch(error => console.error("Error al cerrar sesión:", error));
-        });
-    </script>
+    <script src="js/db.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/time-add-modal.js"></script> 
 </body>
 </html>

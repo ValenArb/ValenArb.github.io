@@ -6,7 +6,7 @@ const currentPage = window.location.pathname.split('/').pop();
 if (protectedPages.includes(currentPage)) {
     auth.onAuthStateChanged(user => {
         if (!user) {
-            window.location.href = "index.html";
+            window.location.href = "login.html";
         }
     });
 }
